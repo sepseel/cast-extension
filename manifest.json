@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "Youtube Caster",
+  "version": "1.0",
+  "description": "My own casting plugin",
+  "icons": {
+    "32": "icons/youtube-32.png"
+  },
+	"permissions": [
+    "*://kit.fontawesome.com/*",
+    "*://www.youtube.com/*",
+    "*://127.0.0.1/*",
+    "*://10.0.1.72/*",
+    "activeTab",
+    "webRequest"
+	],
+  "browser_action": {
+    "browser_style": true,
+    "default_icon": "icons/youtube-32.png",
+		"default_title": "Caster",
+		"default_popup": "popup/cast_video.html"
+  },
+  "applications": {
+    "gecko": {
+      "id": "Caster@sevbesau.com"
+    }
+  }
+}
+
