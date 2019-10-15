@@ -1,6 +1,6 @@
 // make a connection to the server
-const ADDRES = 'http://127.0.0.1:8000';
-//const ADDRES = 'http://10.0.1.72:8000';f
+//const ADDRES = 'http://127.0.0.1:8000';
+const ADDRES = 'http://10.0.1.72:8000';
 let socket = io.connect(ADDRES)
 console.log("Connected to", ADDRES);
 
