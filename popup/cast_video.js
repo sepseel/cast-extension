@@ -1,3 +1,7 @@
+// TODO: connection editor
+// TODO: fix resolution
+
+
 updateView(); // updates the view everytime the popup is opened
 
 /**

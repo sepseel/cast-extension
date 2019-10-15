@@ -20,6 +20,7 @@ function newConnection(socket) {
   console.log("New connection:",socket.id)
   
   let currVolume = 100;
+  let prevVolume;
   let paused = false;
   let playing = false;
   let player = new mpv(status => {
@@ -27,7 +28,8 @@ function newConnection(socket) {
     // TODO: get player states (paused, playing, vol) from status
     if (status.exit) {
       console.log("Player was closed")
-      playing = false            
+      playing = false;
+      prevVolume = currVolume;
     }
   });
   
@@ -38,6 +40,7 @@ function newConnection(socket) {
       paused = false;
       playing = true;
       player.play(data.url)
+      volume(prevVolume)
       setView()
     }
   });
@@ -75,17 +78,21 @@ function newConnection(socket) {
   socket.on('volume', data => {
     if (playing) {
       console.log("volume "+data.vol+"%")
-      while (currVolume < data.vol) {
-        player.increaseVolume()
-        currVolume += 5;
-      }
-      while (currVolume > data.vol) {
-        player.decreaseVolume()
-        currVolume -= 5;
-      }
+      volume(data.vol);
       setView()
     }
   });
+
+  function volume(vol) {
+    while (currVolume < vol) {
+      player.increaseVolume()
+      currVolume += 5;
+    }
+    while (currVolume > vol) {
+      player.decreaseVolume()
+      currVolume -= 5;
+    }
+  }
   
   socket.on('getView', () => {
     console.log("getView");
