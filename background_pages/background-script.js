@@ -1,6 +1,6 @@
 // make a connection to the server
-//const ADDRES = 'http://127.0.0.1:8000';
-const ADDRES = 'http://10.0.1.72:8000';f
+const ADDRES = 'http://127.0.0.1:8000';
+//const ADDRES = 'http://10.0.1.72:8000';f
 let socket = io.connect(ADDRES)
 console.log("Connected to", ADDRES);
 
@@ -10,29 +10,23 @@ console.log("Connected to", ADDRES);
 browser.runtime.onMessage.addListener((message) => {
   switch(message.command) {
     case 'cast':
-    cast(message.value);
-    break;
+      cast(message.value);
+      break;
     case 'stopCast':
-    stopCast();
-    break;
+      stopCast();
+      break;
     case 'pause':
-    pause()
-    break;
+      pause()
+      break;
     case 'seek':
-    seek(message.value);
-    break;
+      seek(message.value);
+      break;
     case 'volume':
-    volume(message.value);
-    break;
-    case 'getVolume': 
-    getVolume()
-    break;
-    case 'getPaused':
-    getPaused()
-    break;
-    case 'getPlaying':
-    getPlaying()
-    break;
+      volume(message.value);
+      break;
+    case 'getView':
+      getView()
+      break;
   }
 });
 
@@ -59,39 +53,17 @@ function volume(vol) { // tell the server to change the volume
   console.log("Sending: volume "+vol+"%");
   socket.emit('volume', {vol:vol})
 }
+function getView() {   // ask the server for the current state of the player
+  console.log("Sending: getView")
+  socket.emit('getView')
+}
 
-// TODO: refactor these requests and responses into a single one
-// Getting the current state of the player to display in the popup
-function getVolume() {  // ask the server for the current volume
-  console.log("Sending: getVolume")
-  socket.emit('getVolume')
-}
-function getPaused() {  // ask the server for the paused state
-  console.log("Sending: getPaused")
-  socket.emit('getPaused')
-}
-function getPlaying() { // ask the server if its playing a video
-  console.log("Sending: getPlaying")
-  socket.emit('getPlaying')
-}
-// handle the response from the server
-socket.on('setVolume', data => {  // pass on the volume to the popup
+/**
+ * Handlers for server responses
+ */
+socket.on('setView', data => {  // send a message to the popup to update itself
   browser.runtime.sendMessage({
-    command: "setVolume",
-    value: data.vol
-  });
-}) 
-socket.on('setPaused', data => {  // pass on the paused state to the popup
-  browser.runtime.sendMessage({
-    command: "setPaused",
-    value: data.paused
-  });
+    command: "setView",
+    value: data
+  })
 })
-socket.on('setPlaying', data => { // pass on the playing state to the popup
-  browser.runtime.sendMessage({
-    command: "setPlaying",
-    value: data.playing
-  });
-})
-
-

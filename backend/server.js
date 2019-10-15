@@ -14,11 +14,6 @@ function startServer(PORT) {
     app.use(express.static('public'));
     console.log("Server running on port", PORT);
     io.sockets.on('connection', newConnection);
-
-}
-
-function mpvStatus(status) {
-    console.log(status);
 }
 
 function newConnection(socket) {
@@ -35,22 +30,22 @@ function newConnection(socket) {
             playing = false            
         }
     });
-    
 
+    // TODO: respond to every request with the new state for the view
     socket.on('cast', data => {
-        console.log("Casting:",data.url);
+        console.log("Casting:", data.url);
         currVolume = 100;
         paused = false;
         playing = true;
         player.play(data.url)
     });
 
-    socket.on('stopCast', data => {
+    socket.on('stopCast', () => {
         playing = false;
         player.stop();
     });
     
-    socket.on('pause', data => {
+    socket.on('pause', () => {
         console.log("TogglePause")
         paused = (paused == false)
         player.togglePause();
@@ -77,6 +72,22 @@ function newConnection(socket) {
         }
     });
 
+    socket.on('getView', () => {
+        console.log("getView");
+        setView();
+    });
+
+    function setView() {
+        data = {
+            vol: currVolume,
+            paused: paused,
+            playing: playing
+        }
+        console.log('setView:',data)
+        io.sockets.emit('setView', data);
+    }
+
+    // TODO refactor into single response
     socket.on('getVolume', data => {
         console.log("getVolume")
         io.sockets.emit('setVolume', {vol: currVolume})

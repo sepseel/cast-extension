@@ -6,23 +6,21 @@ updateView(); // updates the view everytime the popup is opened
 // binds incoming messages to functions
 browser.runtime.onMessage.addListener((message) => {
   switch(message.command) {
-    case 'setVolume':
-      setVolume(message.value)
-      break;
-    case 'setPaused':
-      setPaused(message.value)
-      break;
-    case 'setPlaying':
-      setPlaying(message.value)
+    case 'setView':
+      setView(message.value)
       break;
   }
 });
+function setView(data) {
+  console.log("Recieved: ",data)
+  setVolume(data.vol);
+  setPaused(data.paused);
+  setPlaying(data.playing);
+}
 function setVolume(volume) {   // set the value of the volume slider
-  console.log("Recieved: vol = "+volume)
   document.getElementById("volumeSlider").value = volume;
 }
 function setPaused(paused) {   // set the value of the pause button
-  console.log("Recieved: paused = "+paused)
   if (paused) {
     document.getElementById("pause").innerHTML = "|>"
   } else {
@@ -30,7 +28,6 @@ function setPaused(paused) {   // set the value of the pause button
   }
 }
 function setPlaying(playing) { // set the value of the casting button
-  console.log("Recieved: playing = "+playing)
   if (playing) {
     document.querySelector("#castButton").classList.add("hidden");
     document.querySelector("#stopCastButton").classList.remove("hidden");
@@ -41,16 +38,9 @@ function setPlaying(playing) { // set the value of the casting button
 }
 function updateView() {        // sends all the mesages to update the view
   browser.runtime.sendMessage({
-    command: 'getVolume'
-  })
-  browser.runtime.sendMessage({
-    command: 'getPaused'
-  })
-  browser.runtime.sendMessage({
-    command: 'getPlaying'
+    command: 'getView'
   })
 }
-
 
 function listenForClicks() {
   document.addEventListener("click", (e) => {
