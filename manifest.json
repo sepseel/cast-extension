@@ -1,18 +1,20 @@
 {
   "manifest_version": 2,
   "name": "Youtube Caster",
-  "version": "1.0",
+  "version": "2.0",
   "description": "My own casting plugin",
   "icons": {
     "32": "icons/youtube-32.png"
+  },
+  "background": {
+    "page": "background_pages/background-client.html"
   },
 	"permissions": [
     "*://kit.fontawesome.com/*",
     "*://www.youtube.com/*",
     "*://127.0.0.1/*",
     "*://10.0.1.72/*",
-    "activeTab",
-    "webRequest"
+    "activeTab"
 	],
   "browser_action": {
     "browser_style": true,

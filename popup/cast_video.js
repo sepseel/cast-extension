@@ -1,92 +1,116 @@
+updateView(); // updates the view everytime the popup is opened
 
 /**
- * Listen for clicks on the buttons, and send the appropriate message to
- * the content script in the page.
+ * Functions to update the view elements
  */
-paused = false;
+// binds incoming messages to functions
+browser.runtime.onMessage.addListener((message) => {
+  switch(message.command) {
+    case 'setVolume':
+      setVolume(message.value)
+      break;
+    case 'setPaused':
+      setPaused(message.value)
+      break;
+    case 'setPlaying':
+      setPlaying(message.value)
+      break;
+  }
+});
+function setVolume(volume) {   // set the value of the volume slider
+  console.log("Recieved: vol = "+volume)
+  document.getElementById("volumeSlider").value = volume;
+}
+function setPaused(paused) {   // set the value of the pause button
+  console.log("Recieved: paused = "+paused)
+  if (paused) {
+    document.getElementById("pause").innerHTML = "|>"
+  } else {
+    document.getElementById("pause").innerHTML = "||"
+  }
+}
+function setPlaying(playing) { // set the value of the casting button
+  console.log("Recieved: playing = "+playing)
+  if (playing) {
+    document.querySelector("#castButton").classList.add("hidden");
+    document.querySelector("#stopCastButton").classList.remove("hidden");
+  } else {
+    document.querySelector("#castButton").classList.remove("hidden");
+    document.querySelector("#stopCastButton").classList.add("hidden");
+  }
+}
+function updateView() {        // sends all the mesages to update the view
+  browser.runtime.sendMessage({
+    command: 'getVolume'
+  })
+  browser.runtime.sendMessage({
+    command: 'getPaused'
+  })
+  browser.runtime.sendMessage({
+    command: 'getPlaying'
+  })
+}
+
 
 function listenForClicks() {
   document.addEventListener("click", (e) => {
-
-    function cast(tabs) {
-      browser.tabs.sendMessage(tabs[0].id, {
-        command: "cast",
-      });
-    }
-
-    function pause(tabs) {
-      paused = (paused == false);
-      if (paused) {
-        document.getElementById("pause").innerHTML = "|>"
-      } else {
-        document.getElementById("pause").innerHTML = "||"
-      }
-      browser.tabs.sendMessage(tabs[0].id, {
-        command: "pause",
-      });
-    }
-
-    function seekBack(tabs) {
-      browser.tabs.sendMessage(tabs[0].id, {
-        command: "seek",
-        value: -5,
-      });
-    }
-
-    function seekFwd(tabs) {
-      browser.tabs.sendMessage(tabs[0].id, {
-        command: "seek",
-        value: 5,
-      });
-    }
-
-    function volume(tabs) {
-      browser.tabs.sendMessage(tabs[0].id, {
-        command: "volume",
-        value: document.getElementById('volumeSlider').value,
-      });
-    }
-
     /**
-     * Just log the error to the console.
-     */
-    function reportError(error) {
-      console.error(`Could not cast: ${error}`);
-    }
-
-    /**
-     * Get the active tab,
-     * then call "beastify()" or "reset()" as appropriate.
+     * Add handlers for all the elements of the popup
      */
     if (e.target.classList.contains("cast")) {
-      browser.tabs.query({active: true, currentWindow: true})
-        .then(cast)
-        .catch(reportError);
+      cast();
+    } else if (e.target.classList.contains("stopCast")) {
+      stopCast();
+    } else if (e.target.classList.contains("pause")) {
+      pause()
+    } else if (e.target.classList.contains("seekBack")) {
+      seek(-5);
+    } else if (e.target.classList.contains("seekFwd")) {
+      seek(5);
+    } else if (e.target.classList.contains("slider")) {
+      volume(document.getElementById('volumeSlider').value);
     }
-    else if (e.target.classList.contains("pause")) {
-      browser.tabs.query({active: true, currentWindow: true})
-        .then(pause)
-        .catch(reportError);
+
+    /**
+     * functions that handle the buttons on the popup
+     */
+    function cast(tabs) { // send a message to the content-script to get the page url
+      browser.tabs.query({active: true, currentWindow: true}) // get the active tab
+      .then(tabs => {
+        browser.tabs.sendMessage(tabs[0].id, { // send a message to the content sctipt of that tab
+        command: "cast",
+        });
+        updateView();
+      })
+      .catch(error => {
+        console.error(`Could not cast: ${error}`);
+      });
     }
-    else if (e.target.classList.contains("seekBack")) {
-      browser.tabs.query({active: true, currentWindow: true})
-        .then(seekBack)
-        .catch(reportError);
+    function stopCast() { // sends a message to stop casting
+      browser.runtime.sendMessage({
+        command: "stopCast",
+      })
     }
-    else if (e.target.classList.contains("seekFwd")) {
-      browser.tabs.query({active: true, currentWindow: true})
-        .then(seekFwd)
-        .catch(reportError);
+    function pause() {    // sends a lessage to toggle pause
+      
+      browser.runtime.sendMessage({
+        command: "pause",
+      });
+      updateView();
     }
-    else if (e.target.classList.contains("slider")) {
-      browser.tabs.query({active: true, currentWindow: true})
-        .then(volume)
-        .catch(reportError);
+    function seek(sec) {  // sends a message to seek forward or back in the video
+      browser.runtime.sendMessage({
+        command: "seek",
+        value: sec,
+      })
     }
-    else {
-      console.log(e.target.classList)
+    function volume(vol) {// sends a message to change the volume 
+      browser.runtime.sendMessage({
+        command: "volume",
+        value: vol,
+      });
+      updateView();
     }
-    
   });
 }
 

@@ -30,6 +30,12 @@ html, body {
   margin: 5% auto;
   background-color: #FF0000;
 }
+.stopCast {
+  border-radius: 8px;
+  width: 80%;
+  margin: 5% auto;
+  background-color: #FF0000;
+}
 .cast img {
   width: 30px;
   height: 30px;

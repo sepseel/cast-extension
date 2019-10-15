@@ -1,31 +1,34 @@
 <!DOCTYPE html>
-
 <html>
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="cast_video.css"/>
-</head>
-<body>
-  <!--popup-->
-  <div id="popup-content">
-    <div class="button cast">
-      <img src="../icons/cast.png" alt="[X]">
-    </div>
-    <div class="mediacontrols">
-      <div class="mediabuttons">
-        <div class="button seekBack">&lt;&lt;</div>
-        <div id="pause" class="button pause">||</div>
-        <div class="button seekFwd">>></div>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="cast_video.css"/>
+  </head>
+  <body>
+    <!--popup-->
+    <div id="popup-content">
+      <div class="button cast" id="castButton">
+        <img src="../icons/cast.png" alt="[X]">
       </div>
-      <input type="range" min="0" max="130" class="slider" id="volumeSlider">
+      <div class="button stopCast hidden" id="stopCastButton">
+        Stop!
+      </div>
+      <div class="mediacontrols">
+        <div class="mediabuttons">
+          <div class="button seekBack">&lt;&lt;</div>
+          <div id="pause" class="button pause">||</div>
+          <div class="button seekFwd">>></div>
+        </div>
+        <input type="range" min="0" max="130" class="slider" id="volumeSlider">
+      </div>
     </div>
-  </div>
 
-  <div id="error-content" class="hidden">
-    <p>Cant find a video to cast!</p><p>Try a different page.</p>
-  </div>
+    <!--error content-->
+    <div id="error-content" class="hidden">
+      <p>Cant find a video to cast!</p><p>Try a different page.</p>
+    </div>
 
-  <script src="cast_video.js"></script>
-</body>
-
+    <!--popup controller-->
+    <script src="cast_video.js"></script>
+  </body>
 </html>
