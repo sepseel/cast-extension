@@ -70,7 +70,6 @@ function listenForClicks() {
         browser.tabs.sendMessage(tabs[0].id, { // send a message to the content sctipt of that tab
         command: "cast",
         });
-        updateView();
       })
       .catch(error => {
         console.error(`Could not cast: ${error}`);
@@ -82,11 +81,9 @@ function listenForClicks() {
       })
     }
     function pause() {    // sends a lessage to toggle pause
-      
       browser.runtime.sendMessage({
         command: "pause",
       });
-      updateView();
     }
     function seek(sec) {  // sends a message to seek forward or back in the video
       browser.runtime.sendMessage({
@@ -99,7 +96,6 @@ function listenForClicks() {
         command: "volume",
         value: vol,
       });
-      updateView();
     }
   });
 }
