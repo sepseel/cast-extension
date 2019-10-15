@@ -35,7 +35,7 @@ function newConnection(socket) {
   
   socket.on('cast', data => {
     if (!playing) {
-      console.log("Casting:", data.url);
+      console.log("<- Casting:", data.url);
       currVolume = 100;
       paused = false;
       playing = true;
@@ -47,7 +47,7 @@ function newConnection(socket) {
   
   socket.on('stopCast', () => {
     if (playing) {
-      console.log("StopCast")
+      console.log("<- StopCast")
       playing = false;
       player.stop();
       setView()
@@ -56,7 +56,7 @@ function newConnection(socket) {
   
   socket.on('pause', () => {
     if (playing) {
-      console.log("TogglePause")
+      console.log("<- TogglePause")
       paused = (paused == false)
       player.togglePause();
       setView()
@@ -65,7 +65,7 @@ function newConnection(socket) {
   
   socket.on('seek', data => {
     if (playing) {
-      console.log("seek: "+data.sec+"s")
+      console.log("<- seek: "+data.sec+"s")
       if (data.sec > 0) {
         player.seekForward();
       } else {
@@ -77,7 +77,7 @@ function newConnection(socket) {
   
   socket.on('volume', data => {
     if (playing) {
-      console.log("volume "+data.vol+"%")
+      console.log("<- volume "+data.vol+"%")
       volume(data.vol);
       setView()
     }
@@ -95,7 +95,7 @@ function newConnection(socket) {
   }
   
   socket.on('getView', () => {
-    console.log("getView");
+    console.log("<- getView");
     setView();
   });
   
@@ -105,7 +105,7 @@ function newConnection(socket) {
       paused: paused,
       playing: playing
     }
-    console.log('setView:',data)
+    console.log('-> setView:',data)
     io.sockets.emit('setView', data);
   }
 }

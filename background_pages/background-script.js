@@ -1,6 +1,6 @@
 // make a connection to the server
-//const ADDRES = 'http://127.0.0.1:8000';
-const ADDRES = 'http://10.0.1.72:8000';
+const ADDRES = 'http://127.0.0.1:8000';
+//const ADDRES = 'http://10.0.1.72:8000';
 let socket = io.connect(ADDRES)
 console.log("Connected to", ADDRES);
 
@@ -34,27 +34,27 @@ browser.runtime.onMessage.addListener((message) => {
  * Functions to send messages to the server
  */
 function cast(url) {   // tell the server to cast a video
-  console.log("Sending: ", url)
+  console.log("->", url)
   socket.emit('cast', {url: url})
 }
 function stopCast() {  // tell the setver to stop casting
-  console.log("Sending: stopCast")
+  console.log("-> stopCast")
   socket.emit('stopCast')
 }
 function pause() {     // tell the server to toggle pause
-  console.log("Sending: togglePause")
+  console.log("-> togglePause")
   socket.emit('pause')
 }
 function seek(sec) {   // tell the servevr to seek in the video
-  console.log("Sending: seek "+sec+"s");
+  console.log("-> seek "+sec+"s");
   socket.emit('seek', {sec: sec})
 }
 function volume(vol) { // tell the server to change the volume
-  console.log("Sending: volume "+vol+"%");
+  console.log("-> volume "+vol+"%");
   socket.emit('volume', {vol:vol})
 }
 function getView() {   // ask the server for the current state of the player
-  console.log("Sending: getView")
+  console.log("-> getView")
   socket.emit('getView')
 }
 
@@ -62,6 +62,7 @@ function getView() {   // ask the server for the current state of the player
  * Handlers for server responses
  */
 socket.on('setView', data => {  // send a message to the popup to update itself
+  console.log("<-",data)
   browser.runtime.sendMessage({
     command: "setView",
     value: data

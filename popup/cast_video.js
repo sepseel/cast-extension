@@ -1,5 +1,7 @@
 // TODO: connection editor
 // TODO: fix resolution
+// TODO: dont play in highest res
+// TODO: https://github.com/00SteinsGate00/Node-MPV/tree/Node-MPV-2
 
 
 updateView(); // updates the view everytime the popup is opened
@@ -15,8 +17,7 @@ browser.runtime.onMessage.addListener((message) => {
       break;
   }
 });
-function setView(data) {
-  console.log("Recieved: ",data)
+function setView(data) {       // wrapper for all the view setters
   setVolume(data.vol);
   setPaused(data.paused);
   setPlaying(data.playing);
@@ -68,7 +69,7 @@ function listenForClicks() {
     /**
      * functions that handle the buttons on the popup
      */
-    function cast(tabs) { // send a message to the content-script to get the page url
+    function cast() { // send a message to the content-script to get the page url
       browser.tabs.query({active: true, currentWindow: true}) // get the active tab
       .then(tabs => {
         browser.tabs.sendMessage(tabs[0].id, { // send a message to the content sctipt of that tab
