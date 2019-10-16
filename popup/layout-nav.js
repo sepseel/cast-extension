@@ -1,5 +1,9 @@
 let layouts = [
   {
+    id: "error-content",
+    name: "Error"
+  },
+  {
     id: "connection-popup",
     name: "Connection"
   },
@@ -8,19 +12,20 @@ let layouts = [
     name: "Controls"
   }
 ]
-let activeLayout = 0;
+let activeLayout = 1;
 
 
 
 document.addEventListener("click", e => {
-  if (e.target.classList.contains("prev-layout")) {
+  if (activeLayout != 0 && e.target.classList.contains("prev-layout")) {
     prevLayout();
-  } else if (e.target.classList.contains("next-layout")) {
+  } else if (activeLayout != 0 && e.target.classList.contains("next-layout")) {
     nextLayout();
   }
 })
 
-function setLayout(activeLayout) {
+function setLayout(layoutIndex) {
+  activeLayout = layoutIndex;
   // first hide all the layouts
   for (layout of layouts) {
     document.querySelector("#"+layout.id).classList.add("hidden");
@@ -33,14 +38,14 @@ function setLayout(activeLayout) {
 function nextLayout() {
   activeLayout += 1;
   if (activeLayout == layouts.length) {
-    activeLayout = 0;
+    activeLayout = 1;
   }
   setLayout(activeLayout)
 }
 
 function prevLayout() {
   activeLayout -= 1;
-  if (activeLayout < 0) {
+  if (activeLayout < 1) {
     activeLayout = layouts.length-1;
   }
   setLayout(activeLayout);

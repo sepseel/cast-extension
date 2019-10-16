@@ -1,9 +1,7 @@
-// TODO: fix resolution
-// TODO: dont play in highest res
-// TODO: https://github.com/00SteinsGate00/Node-MPV/tree/Node-MPV-2
 
 
-updateView(); // updates the view everytime the popup is opened
+
+
 
 /**
  * Functions to update the view elements
@@ -18,15 +16,17 @@ browser.runtime.onMessage.addListener((message) => {
 });
 function setView(data) {       // TODO
   if (data.connected) {
-    document.querySelector("#connection-popup").classList.add("hidden");
-    document.querySelector("#media-popup").classList.remove("hidden");
+    setLayout(2)
+    // document.querySelector("#connection-popup").classList.add("hidden");
+    // document.querySelector("#media-popup").classList.remove("hidden");
     setVolume(data.vol);
     setPaused(data.paused);
     setPlaying(data.playing);
   } else { 
     // hide 
-    document.querySelector("#media-popup").classList.add("hidden");
-    document.querySelector("#connection-popup").classList.remove("hidden");
+    setLayout(1);
+    // document.querySelector("#media-popup").classList.add("hidden");
+    // document.querySelector("#connection-popup").classList.remove("hidden");
 
   }
 }
@@ -56,6 +56,7 @@ function updateView() {        // sends all the mesages to update the view
 }
 
 function listenForClicks() {
+  updateView(); // updates the view everytime the popup is opened and there are no errors
   document.addEventListener("click", (e) => {
     /**
      * Add handlers for all the elements of the popup
@@ -75,15 +76,16 @@ function listenForClicks() {
     } else if (e.target.classList.contains("submit-addres")) {
       connect(document.getElementById('addres-input').value)
       //docment.getElementById('addres-input').value
-    } else if (e.target.classList.contains('toggle-layout')) {
-      if (document.getElementById("media-popup").classList.contains("hidden")) {
-        document.querySelector("#media-popup").classList.remove("hidden");
-        document.querySelector("#connection-popup").classList.add("hidden");
-      } else {
-        document.querySelector("#media-popup").classList.add("hidden");
-        document.querySelector("#connection-popup").classList.remove("hidden");
-      }
     }
+    // } else if (e.target.classList.contains('toggle-layout')) {
+    //   if (document.getElementById("media-popup").classList.contains("hidden")) {
+    //     document.querySelector("#media-popup").classList.remove("hidden");
+    //     document.querySelector("#connection-popup").classList.add("hidden");
+    //   } else {
+    //     document.querySelector("#media-popup").classList.add("hidden");
+    //     document.querySelector("#connection-popup").classList.remove("hidden");
+    //   }
+    // }
 
     /**
      * functions that handle the buttons on the popup
@@ -135,9 +137,10 @@ function listenForClicks() {
  * Display the popup's error message, and hide the normal UI.
  */
 function reportExecuteScriptError(error) {
-  document.querySelector("#media-popup").classList.add("hidden");
-  document.querySelector("#connection-popup").classList.add("hidden");
-  document.querySelector("#error-content").classList.remove("hidden");
+  setLayout(0);
+  // document.querySelector("#media-popup").classList.add("hidden");
+  // document.querySelector("#connection-popup").classList.add("hidden");
+  // document.querySelector("#error-content").classList.remove("hidden");
   console.error(`Failed to execute content script: ${error.message}`);
 }
 
