@@ -17,10 +17,19 @@ browser.runtime.onMessage.addListener((message) => {
       break;
   }
 });
-function setView(data) {       // wrapper for all the view setters
-  setVolume(data.vol);
-  setPaused(data.paused);
-  setPlaying(data.playing);
+function setView(data) {       // TODO
+  if (data.connected) {
+    document.querySelector("#connection-popup").classList.add("hidden");
+    document.querySelector("#media-popup").classList.remove("hidden");
+    setVolume(data.vol);
+    setPaused(data.paused);
+    setPlaying(data.playing);
+  } else { 
+    // hide 
+    document.querySelector("#media-popup").classList.add("hidden");
+    document.querySelector("#connection-popup").classList.remove("hidden");
+
+  }
 }
 function setVolume(volume) {   // set the value of the volume slider
   document.getElementById("volumeSlider").value = volume;
@@ -64,6 +73,9 @@ function listenForClicks() {
       seek(5);
     } else if (e.target.classList.contains("slider")) {
       volume(document.getElementById('volumeSlider').value);
+    } else if (e.target.classList.contains("submit-addres")) {
+      connect(document.getElementById('addres-input').value)
+      //docment.getElementById('addres-input').value
     }
 
     /**
@@ -102,6 +114,12 @@ function listenForClicks() {
         value: vol,
       });
     }
+    function connect(addres) {
+      browser.runtime.sendMessage({
+        command: "connect",
+        value: "http://"+addres,
+      });
+    }
   });
 }
 
@@ -110,7 +128,8 @@ function listenForClicks() {
  * Display the popup's error message, and hide the normal UI.
  */
 function reportExecuteScriptError(error) {
-  document.querySelector("#popup-content").classList.add("hidden");
+  document.querySelector("#media-popup").classList.add("hidden");
+  document.querySelector("#connection-popup").classList.add("hidden");
   document.querySelector("#error-content").classList.remove("hidden");
   console.error(`Failed to execute content script: ${error.message}`);
 }

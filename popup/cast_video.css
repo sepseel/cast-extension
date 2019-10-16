@@ -22,6 +22,7 @@ html, body {
   font-size: 1.5em;
   cursor: pointer;
   padding: 4px;
+  color: white;
 
 }
 .cast {
@@ -29,6 +30,7 @@ html, body {
   width: 80%;
   margin: 5% auto;
   background-color: #FF0000;
+  color: white;
 }
 .stopCast {
   border-radius: 8px;
@@ -81,4 +83,40 @@ html, body {
   display: block;
   width: 80%;
   margin: 10px auto;
+}
+
+#addres-input {
+  width: 200px;
+  margin: 9px;
+  margin-bottom: 25px;
+  border-radius: 0;
+  border: 1px #303030;
+  height: 30px;
+  background: #121212;
+  color: white;
+  padding: 0 8px;
+}
+
+.submit-addres {
+  background-color: #323234;
+  border-radius: 20px;
+  margin: auto;
+  height: 40px;
+  width: 120px;
+}
+.submit-addres:hover {
+  animation-name: fade;
+  animation-duration: 500ms;
+  background-color: white;
+  color: black;
+}
+@keyframes fade {
+  from {
+    background-color: #323234;
+    color: white;
+  }
+  to {
+    background-color: white;
+    color: black;
+  }
 }

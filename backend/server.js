@@ -103,11 +103,16 @@ function newConnection(socket) {
     data = {
       vol: currVolume,
       paused: paused,
-      playing: playing
+      playing: playing,
+      connected: true
     }
     console.log('-> setView:',data)
     io.sockets.emit('setView', data);
   }
+
+  socket.on('disconnect', () => {
+    console.log("Lost connection:", socket.id)
+  })
 }
 
 startServer(8000)

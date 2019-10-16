@@ -1,14 +1,13 @@
-// make a connection to the server
-const ADDRES = 'http://127.0.0.1:8000';
-//const ADDRES = 'http://10.0.1.72:8000';
-let socket = io.connect(ADDRES)
-console.log("Connected to", ADDRES);
-
+let socket;
+let connected = false;
 /**
 * Bind incomming messages from from the popup or content-script to functions
 */
 browser.runtime.onMessage.addListener((message) => {
   switch(message.command) {
+    case 'connect':
+      connect(message.value);
+      break;
     case 'cast':
       cast(message.value);
       break;
@@ -29,6 +28,27 @@ browser.runtime.onMessage.addListener((message) => {
       break;
   }
 });
+
+function connect(addres) {    // make a connection to the server
+  //const ADDRES = 'http://127.0.0.1:8000';
+  //const ADDRES = 'http://10.0.1.72:8000';
+  socket = io.connect(addres)
+  console.log("Connected to", addres);
+  connected = true;
+
+  /**
+   * Handlers for server responses
+   */
+  socket.on('setView', data => {  // send a message to the popup to update itself
+    console.log("<-",data)
+    browser.runtime.sendMessage({
+      command: "setView",
+      value: data
+    })
+  })
+
+  getView();
+}
 
 /**
  * Functions to send messages to the server
@@ -54,17 +74,15 @@ function volume(vol) { // tell the server to change the volume
   socket.emit('volume', {vol:vol})
 }
 function getView() {   // ask the server for the current state of the player
-  console.log("-> getView")
-  socket.emit('getView')
+  if (connected) {
+    console.log("-> getView")
+    socket.emit('getView')
+  } else { // if were not connected, dont display the media player
+    browser.runtime.sendMessage({
+      command: "setView",
+      value: {connected: false}
+    })
+  }
 }
 
-/**
- * Handlers for server responses
- */
-socket.on('setView', data => {  // send a message to the popup to update itself
-  console.log("<-",data)
-  browser.runtime.sendMessage({
-    command: "setView",
-    value: data
-  })
-})
+
