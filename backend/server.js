@@ -4,6 +4,10 @@ const cors = require('cors');
 const mpv = require('mpv-controller');
 let io;
 
+// TODO: fix resolution
+// TODO: dont play in highest res
+// TODO: https://github.com/00SteinsGate00/Node-MPV/tree/Node-MPV-2
+
 function startServer(PORT) {
   const app = express();
   app.use(cors({
