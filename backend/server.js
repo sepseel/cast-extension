@@ -17,7 +17,7 @@ function startServer(PORT) {
 }
 
 function newConnection(socket) {
-  console.log("New connection:",socket.id)
+  console.log("~> New connection:",socket.id)
   
   let currVolume = 100;
   let prevVolume;
@@ -111,7 +111,7 @@ function newConnection(socket) {
   }
 
   socket.on('disconnect', () => {
-    console.log("Lost connection:", socket.id)
+    console.log("x~ Lost connection:", socket.id)
   })
 }
 
