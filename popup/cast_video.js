@@ -1,8 +1,3 @@
-
-
-
-
-
 /**
  * Functions to update the view elements
  */
@@ -17,17 +12,11 @@ browser.runtime.onMessage.addListener((message) => {
 function setView(data) {       // TODO
   if (data.connected) {
     setLayout(2)
-    // document.querySelector("#connection-popup").classList.add("hidden");
-    // document.querySelector("#media-popup").classList.remove("hidden");
     setVolume(data.vol);
     setPaused(data.paused);
     setPlaying(data.playing);
   } else { 
-    // hide 
     setLayout(1);
-    // document.querySelector("#media-popup").classList.add("hidden");
-    // document.querySelector("#connection-popup").classList.remove("hidden");
-
   }
 }
 function setVolume(volume) {   // set the value of the volume slider
@@ -75,17 +64,7 @@ function listenForClicks() {
       volume(document.getElementById('volumeSlider').value);
     } else if (e.target.classList.contains("submit-addres")) {
       connect(document.getElementById('addres-input').value)
-      //docment.getElementById('addres-input').value
     }
-    // } else if (e.target.classList.contains('toggle-layout')) {
-    //   if (document.getElementById("media-popup").classList.contains("hidden")) {
-    //     document.querySelector("#media-popup").classList.remove("hidden");
-    //     document.querySelector("#connection-popup").classList.add("hidden");
-    //   } else {
-    //     document.querySelector("#media-popup").classList.add("hidden");
-    //     document.querySelector("#connection-popup").classList.remove("hidden");
-    //   }
-    // }
 
     /**
      * functions that handle the buttons on the popup
@@ -138,9 +117,6 @@ function listenForClicks() {
  */
 function reportExecuteScriptError(error) {
   setLayout(0);
-  // document.querySelector("#media-popup").classList.add("hidden");
-  // document.querySelector("#connection-popup").classList.add("hidden");
-  // document.querySelector("#error-content").classList.remove("hidden");
   console.error(`Failed to execute content script: ${error.message}`);
 }
 

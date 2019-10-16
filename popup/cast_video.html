@@ -13,26 +13,23 @@
     </div>
 
     <!--media-popup-->
-    <div id="media-popup" class="hidden">
-      <div class="button cast" id="castButton">
+    <div id="media-popup">
+      <div id="castButton" class="button castButton cast" >
         <img src="../icons/cast.png" alt="[X]">
       </div>
-      <div class="button stopCast hidden" id="stopCastButton">
+      <div id="stopCastButton" class="button castButton stopCast hidden" >
         Stop!
       </div>
-      <div class="mediacontrols">
-        <div class="mediabuttons">
-          <div class="button seekBack">&lt;&lt;</div>
-          <div id="pause" class="button pause">||</div>
-          <div class="button seekFwd">>></div>
-        </div>
-        <input type="range" min="0" max="130" class="slider" id="volumeSlider">
+      <div class="mediabuttons">
+        <div class="button seekBack">&lt;&lt;</div>
+        <div id="pause" class="button pause">||</div>
+        <div class="button seekFwd">>></div>
       </div>
-      
+      <input type="range" min="0" max="130" class="slider" id="volumeSlider">
     </div>
 
     <!--connection-popup-->
-    <div id="connection-popup">
+    <div id="connection-popup" class="hidden">
       <input type="text" id=addres-input value="localhost:8000">
       <div class="button submit-addres">Submit</div>
     </div>
@@ -42,8 +39,8 @@
       <p>Cant find a video to cast!</p><p>Try a different page.</p>
     </div>
 
-    <!--popup controller-->
+    <!--popup controllers-->
+    <script src="popup-navigator.js"></script>
     <script src="cast_video.js"></script>
-    <script src="layout-nav.js"></script>
   </body>
 </html>

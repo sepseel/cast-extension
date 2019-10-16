@@ -24,18 +24,12 @@ body {
   height: 40px;
   width: 40px;
 }
-.cast {
+.castButton {
   border-radius: 8px;
   width: 80%;
   margin: 5% auto;
   background-color: #FF0000;
   color: white;
-}
-.stopCast {
-  border-radius: 8px;
-  width: 80%;
-  margin: 5% auto;
-  background-color: #FF0000;
 }
 .cast img {
   width: 30px;
@@ -44,9 +38,6 @@ body {
   margin:auto;
 }
 
-.mediacontrols {
-  width: 100%;
-}
 .mediabuttons {
   width: 130px;
   margin: auto;
