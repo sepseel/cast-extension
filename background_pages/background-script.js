@@ -30,15 +30,24 @@ browser.runtime.onMessage.addListener((message) => {
 });
 
 function connect(addres) {    // make a connection to the server
-  //const ADDRES = 'http://127.0.0.1:8000';
-  //const ADDRES = 'http://10.0.1.72:8000';
-  socket = io.connect(addres)
-  console.log("Connected to", addres);
-  connected = true;
+  try {
+    socket.disconnect();
+    console.log("Disconnected from", addres);
+    connected = false;
+  } catch(error) {
+    // do nothing
+  } finally {
+    socket = io.connect(addres)
+  }
 
   /**
    * Handlers for server responses
    */
+  socket.on('connect', () => {
+    console.log("Connected to", addres);
+    connected = true;
+    getView();
+  });
   socket.on('setView', data => {  // send a message to the popup to update itself
     console.log("<-",data)
     browser.runtime.sendMessage({
