@@ -1,4 +1,3 @@
-// TODO: connection editor
 // TODO: fix resolution
 // TODO: dont play in highest res
 // TODO: https://github.com/00SteinsGate00/Node-MPV/tree/Node-MPV-2
@@ -76,6 +75,14 @@ function listenForClicks() {
     } else if (e.target.classList.contains("submit-addres")) {
       connect(document.getElementById('addres-input').value)
       //docment.getElementById('addres-input').value
+    } else if (e.target.classList.contains('toggle-layout')) {
+      if (document.getElementById("media-popup").classList.contains("hidden")) {
+        document.querySelector("#media-popup").classList.remove("hidden");
+        document.querySelector("#connection-popup").classList.add("hidden");
+      } else {
+        document.querySelector("#media-popup").classList.add("hidden");
+        document.querySelector("#connection-popup").classList.remove("hidden");
+      }
     }
 
     /**

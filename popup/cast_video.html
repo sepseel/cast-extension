@@ -5,10 +5,11 @@
     <link rel="stylesheet" href="cast_video.css"/>
   </head>
   <body>
-    <!--connection-popup-->
-    <div id="connection-popup">
-      <input type="text" id=addres-input>
-      <div class="button submit-addres">Submit</div>
+    <!--togglebutton-->
+    <div class="popup-navigator">
+      <div class="button prev-layout">&lt;</div>
+      <div id="layout-name">Connection</div>
+      <div class="button next-layout">></div>
     </div>
 
     <!--media-popup-->
@@ -27,6 +28,13 @@
         </div>
         <input type="range" min="0" max="130" class="slider" id="volumeSlider">
       </div>
+      
+    </div>
+
+    <!--connection-popup-->
+    <div id="connection-popup">
+      <input type="text" id=addres-input value="localhost:8000">
+      <div class="button submit-addres">Submit</div>
     </div>
 
     <!--error content-->
@@ -36,5 +44,6 @@
 
     <!--popup controller-->
     <script src="cast_video.js"></script>
+    <script src="layout-nav.js"></script>
   </body>
 </html>
