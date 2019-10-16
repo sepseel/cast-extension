@@ -9,7 +9,7 @@ browser.runtime.onMessage.addListener((message) => {
       break;
   }
 });
-function setView(data) {       // TODO
+function setView(data) {       // set the correct content in the popup
   if (data.connected) {
     setLayout(2)
     setVolume(data.vol);
@@ -62,10 +62,8 @@ function listenForClicks() {
       seek(5);
     } else if (e.target.classList.contains("slider")) {
       volume(document.getElementById('volumeSlider').value);
-    } else if (e.target.classList.contains("submit-addres")) {
-      connect(document.getElementById('addres-input').value)
-    }
-
+    } 
+    
     /**
      * functions that handle the buttons on the popup
      */
@@ -100,12 +98,6 @@ function listenForClicks() {
       browser.runtime.sendMessage({
         command: "volume",
         value: vol,
-      });
-    }
-    function connect(addres) {
-      browser.runtime.sendMessage({
-        command: "connect",
-        value: "http://"+addres,
       });
     }
   });
