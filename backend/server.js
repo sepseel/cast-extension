@@ -31,15 +31,15 @@ function newConnection(socket) {
 
   
 
-  // let player = new mpv(status => {
-  //   //console.log(status);
-  //   // TODO: get player states (paused, playing, vol) from status
-  //   if (status.exit) {
-  //     console.log("Player was closed")
-  //     playing = false;
-  //     prevVolume = currVolume;
-  //   }
-  // });
+  let player = new mpv(status => {
+    //console.log(status);
+    // TODO: get player states (paused, playing, vol) from status
+    if (status.exit) {
+      console.log("Player was closed")
+      playing = false;
+      prevVolume = currVolume;
+    }
+  });
   
   socket.on('cast', data => {
     if (!playing) {
@@ -47,15 +47,7 @@ function newConnection(socket) {
       currVolume = 100;
       paused = false;
       playing = true;
-      mpv.start()
-      .then(() => {
-        return mpv.load()
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-
-      //player.play(data.url)
+      player.play(data.url)
       volume(prevVolume)
       setView()
     }
