@@ -1,8 +1,7 @@
 const express = require('express');
 const socket = require('socket.io');
 const cors = require('cors');
-const mpvAPI = require('node-mpv');
-const mpv = new mpvAPI();
+const mpv = require('mpv-controller');
 let io;
 
 // TODO: fix resolution
