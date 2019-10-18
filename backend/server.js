@@ -1,7 +1,8 @@
 const express = require('express');
 const socket = require('socket.io');
 const cors = require('cors');
-const mpv = require('mpv-controller');
+const mpvAPI = require('node-mpv');
+const mpv = new mpvAPI();
 let io;
 
 // TODO: fix resolution
@@ -27,15 +28,18 @@ function newConnection(socket) {
   let prevVolume;
   let paused = false;
   let playing = false;
-  let player = new mpv(status => {
-    //console.log(status);
-    // TODO: get player states (paused, playing, vol) from status
-    if (status.exit) {
-      console.log("Player was closed")
-      playing = false;
-      prevVolume = currVolume;
-    }
-  });
+
+  
+
+  // let player = new mpv(status => {
+  //   //console.log(status);
+  //   // TODO: get player states (paused, playing, vol) from status
+  //   if (status.exit) {
+  //     console.log("Player was closed")
+  //     playing = false;
+  //     prevVolume = currVolume;
+  //   }
+  // });
   
   socket.on('cast', data => {
     if (!playing) {
@@ -43,7 +47,15 @@ function newConnection(socket) {
       currVolume = 100;
       paused = false;
       playing = true;
-      player.play(data.url)
+      mpv.start()
+      .then(() => {
+        return mpv.load()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+      //player.play(data.url)
       volume(prevVolume)
       setView()
     }
