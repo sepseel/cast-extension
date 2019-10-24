@@ -4,9 +4,9 @@ const cors = require('cors');
 const mpv = require('mpv-controller');
 let io;
 
+// TODO: fix plugin bug -> connection title and player controlls
 // TODO: fix resolution
 // TODO: dont play in highest res
-// TODO: https://github.com/00SteinsGate00/Node-MPV/tree/Node-MPV-2
 
 function startServer(PORT) {
   const app = express();
@@ -42,11 +42,11 @@ function newConnection(socket) {
   
   socket.on('cast', data => {
     if (!playing) {
-      console.log("<- Casting:", data.url);
+      console.log("<- Casting:", "ytdl"+data.url.substring(5));
       currVolume = 100;
       paused = false;
       playing = true;
-      player.play(data.url, ["--fs"])
+      player.play("ytdl"+data.url.substring(5), ["--fs"])
       volume(prevVolume)
       setView()
     }
