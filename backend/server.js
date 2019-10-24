@@ -46,7 +46,7 @@ function newConnection(socket) {
       currVolume = 100;
       paused = false;
       playing = true;
-      player.play(data.url)
+      player.play(data.url, ["--fs"])
       volume(prevVolume)
       setView()
     }
